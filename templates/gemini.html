@@ -1,0 +1,33 @@
+{% extends "modelo.html" %}
+{% block conteudo %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pergunte ao Gemini</title>
+</head>
+<body>
+    <h1>Converse com o Gemini</h1>
+
+    <form method="POST" action="/gemini">
+        <label for="pergunta">Sua Pergunta:</label><br>
+        <textarea id="pergunta" name="pergunta" rows="10" cols="50" placeholder="Digite sua pergunta aqui..." required></textarea><br>
+        <button type="submit">Perguntar ao Gemini</button>
+    </form>
+
+    {% if resposta %}
+        <div>
+            <h3>Você perguntou:</h3>
+            <p>{{ pergunta }}</p>
+        </div>
+        <div>
+            <h3>Resposta do Gemini:</h3>
+            <p>{{ resposta }}</p>
+        </div>
+    {% endif %}
+</body>
+<a href="/" class="btn btn-outline-secondary">Página Inicial</a>
+</html>
+
+{% endblock %}
