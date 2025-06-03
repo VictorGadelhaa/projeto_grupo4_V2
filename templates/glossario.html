@@ -13,14 +13,13 @@
 </thead>
 <tbody>
 {% for termo in glossario %}
-<tr>
-<th scope="row">{{ loop.index }}</th>
-<td>{{ termo[0] }}</td>
-<td>{{ termo[1] }}</td>
 <td>
-Apagar
+    <a href="{{ url_for('editar_termo', termo=termo[0]) }}" class="btn btn-sm btn-warning">Editar</a>
+    <a href="{{ url_for('deletar_termo', termo=termo[0]) }}" class="btn btn-sm btn-danger"
+       onclick="return confirm('O termo \'{{ termo[0] }}\' vai ser deletado, tem certeza ?')">
+       Apagar
+    </a>
 </td>
-</tr>
 {% endfor %}
 </tbody>
 </table>
