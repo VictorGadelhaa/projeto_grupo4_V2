@@ -22,7 +22,7 @@ def gemini():
 
 @app.route('/')
 def ola():
-    # return '<h1>Olá, Mundo!</h1>'
+
     return render_template('index.html')
 
 @app.route('/sobre-equipe')
@@ -57,6 +57,43 @@ def criar_termo():
     with open('bd_glossario.csv', 'a', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile, delimiter=';')
         writer.writerow([termo, definicao])
+
+    return redirect(url_for('glossario'))
+
+@app.route('/editar_termo/<int:indice>', methods=['GET'])
+def editar_termo(indice):
+    with open('bd_glossario.csv', newline='', encoding='utf-8') as csvfile:
+        termos = list(csv.reader(csvfile, delimiter=';'))
+        termo = termos[indice]
+    return render_template('editar_termo.html', indice=indice, termo=termo)
+
+@app.route('/atualizar_termo/<int:indice>', methods=['POST'])
+def atualizar_termo(indice):
+    nova_definicao_termo = request.form['termo']
+    nova_definicao = request.form['definicao']
+
+    with open('bd_glossario.csv', newline='', encoding='utf-8') as csvfile:
+        termos = list(csv.reader(csvfile, delimiter=';'))
+
+    termos[indice] = [nova_definicao_termo, nova_definicao]
+
+    with open('bd_glossario.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile, delimiter=';')
+        writer.writerows(termos)
+
+    return redirect(url_for('glossario'))
+
+@app.route('/remover_termo/<int:indice>')
+def remover_termo(indice):
+    with open('bd_glossario.csv', newline='', encoding='utf-8') as csvfile:
+        linhas = list(csv.reader(csvfile, delimiter=';'))
+
+    if 0 <= indice < len(linhas):
+        linhas.pop(indice)
+
+    with open('bd_glossario.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile, delimiter=';')
+        writer.writerows(linhas)
 
     return redirect(url_for('glossario'))
 
